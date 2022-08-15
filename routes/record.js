@@ -163,8 +163,7 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
 
 
 // This section will help you add a post.
-recordRoutes.route("/addPost/:user", upload.single('image')).post(function (req, response) {
-    console.log(req.file);
+recordRoutes.route("/addPost/:user").post(function (req, response) {
     let db_connect = dbo.getDb();
     var today = new Date(Date.now());
     let myquery = { name: req.params.user };
