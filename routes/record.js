@@ -13,9 +13,6 @@ const ObjectId = require("mongodb").ObjectId;
 
 //const mongoose = require("mongoose");
 
-const multer = require('multer');
-const upload = multer({ dest: 'uploads' });
-
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
