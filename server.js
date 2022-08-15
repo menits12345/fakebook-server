@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(require("./routes/record"));
 // use the express-static middleware
 app.use(express.static("public"))
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb' }));
 
 // get driver connection
 const dbo = require("./db/conn");
