@@ -10,7 +10,7 @@ app.use(require("./routes/record"));
 app.use(express.static("public"));
 var bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '10mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true, parameterLimit: 500000 }))
 
 // get driver connection
 const dbo = require("./db/conn");
