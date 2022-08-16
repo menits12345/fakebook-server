@@ -18,6 +18,7 @@ recordRoutes.use(bodyParser.urlencoded({ limit: 100000000, extended: true }))
 
 recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success' });
+    console.log('Limit file size: ' + limit);
 });
 
 // This section will help you get a list of all the records.
