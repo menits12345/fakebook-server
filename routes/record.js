@@ -182,6 +182,7 @@ recordRoutes.route("/addPost/:user").post(function (req, response) {
             }
         }
     }
+    console.log("added");
     db_connect
         .collection("records")
         .updateOne(myquery, myquery2, function (err, res) {
