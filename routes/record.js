@@ -15,7 +15,7 @@ const ObjectId = require("mongodb").ObjectId;
 //const mongoose = require("mongoose");
 
 var jsonParser = bodyParser.json({ limit: '5mb', extended: true });
-urlencodedParser = bodyParser.urlencoded({ limit: '5mb', extended: true });
+var urlencodedParser = bodyParser.urlencoded({ limit: '5mb', extended: true });
 recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success', limit: bodyParser.limit });
 });
@@ -169,7 +169,7 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
 
 
 // This section will help you add a post.
-recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
+recordRoutes.route("/addPost/:user", jsonParser).post(function (req, response) {
     let db_connect = dbo.getDb();
     var today = new Date(Date.now());
     let myquery = { name: req.params.user };
