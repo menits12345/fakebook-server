@@ -169,6 +169,12 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
 recordRoutes.route("/addPost/:user").post(function (req, response) {
     let db_connect = dbo.getDb();
     var today = new Date(Date.now());
+    var imgstr = "";
+    var chunks = [];
+    chunks = [req.body.image];
+    for (let i = 0; i < chunks.length; i++) {
+        imgstr += chunks[i];
+    }
     let myquery = { name: req.params.user };
     let myquery2 = {
         $push: {
@@ -177,7 +183,7 @@ recordRoutes.route("/addPost/:user").post(function (req, response) {
                 user: req.params.user,
                 title: req.body.title,
                 body: req.body.body,
-                image: req.body.image,
+                image: imgstr,
                 comments: [],
             }
         }
