@@ -12,7 +12,7 @@ var getRawBody = require('raw-body')
 
 app.use(express.static("public"));
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(require("./routes/record"));
 
 // get driver connection
