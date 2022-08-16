@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(require("./routes/record"));
 // use the express-static middleware
 app.use(express.static("public"));
-import bodyParser from "body-parser";
+var bodyParser = require('body-parser')
 app.use(bodyParser.json({ limit: '50mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 

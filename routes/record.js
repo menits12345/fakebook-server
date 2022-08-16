@@ -12,7 +12,7 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 //const mongoose = require("mongoose");
-import bodyParser from "body-parser";
+var bodyParser = require('body-parser')
 recordRoutes.use(bodyParser.json({ limit: '50mb', extended: true }))
 recordRoutes.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
