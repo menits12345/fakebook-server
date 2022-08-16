@@ -9,8 +9,8 @@ app.use(require("./routes/record"));
 // use the express-static middleware
 app.use(express.static("public"));
 var bodyParser = require('body-parser')
-app.use(bodyParser.json({ limit: '50mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+app.use(bodyParser.json({ limit: 100000000, extended: true }))
+app.use(bodyParser.urlencoded({ limit: 100000000, extended: true }))
 
 // get driver connection
 const dbo = require("./db/conn");

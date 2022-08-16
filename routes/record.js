@@ -13,8 +13,8 @@ const ObjectId = require("mongodb").ObjectId;
 
 //const mongoose = require("mongoose");
 var bodyParser = require('body-parser')
-recordRoutes.use(bodyParser.json({ limit: '50mb', extended: true }))
-recordRoutes.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+recordRoutes.use(bodyParser.json({ limit: 100000000, extended: true }))
+recordRoutes.use(bodyParser.urlencoded({ limit: 100000000, extended: true }))
 
 recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success' });
