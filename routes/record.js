@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 //const mongoose = require("mongoose");
 
-var jsonParser = bodyParser.json({ limit: '5mb', extended: true });
+var jsonParser = bodyParser.json({ limit: '5mb' });
 var urlencodedParser = bodyParser.urlencoded({ limit: '5mb', extended: true });
 recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success', limit: bodyParser.limit });

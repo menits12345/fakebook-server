@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 // use the express-static middleware
 app.use(express.static("public"));
-app.use(bodyParser.json({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(require("./routes/record"));
 
