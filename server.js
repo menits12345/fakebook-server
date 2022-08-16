@@ -8,8 +8,6 @@ app.use(cors());
 app.use(express.json());
 // use the express-static middleware
 
-var getRawBody = require('raw-body')
-
 app.use(express.static("public"));
 app.use(bodyParser({ limit: '50mb' }));
 app.use(require("./routes/record"));
