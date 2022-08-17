@@ -87,7 +87,7 @@ recordRoutes.route("/record/add").post(function (req, response) {
         posts: []
     };
 
-    let user = {
+    /*let user = {
         name: req.body.name,
         password: req.body.password,
         gender: req.body.gender,
@@ -99,7 +99,7 @@ recordRoutes.route("/record/add").post(function (req, response) {
     var sHeader = JSON.stringify(header);
     var sPayload = JSON.stringify(user);
     const sJWT = JSRSASign.jws.JWS.sign('HS512', sHeader, sPayload, key);
-    console.log(sJWT);
+    console.log(sJWT);*/
 
 
     db_connect.collection("records").insertOne(myobj, function (err, res) {
