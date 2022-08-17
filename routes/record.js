@@ -12,6 +12,7 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+const JSRSASign = require('jsrsasign');
 //const mongoose = require("mongoose");
 
 var jsonParser = bodyParser.json({ limit: '5mb' });
@@ -87,7 +88,7 @@ recordRoutes.route("/record/add").post(function (req, response) {
         posts: []
     };
 
-    /*let user = {
+    let claims = {
         name: req.body.name,
         password: req.body.password,
         gender: req.body.gender,
@@ -97,9 +98,9 @@ recordRoutes.route("/record/add").post(function (req, response) {
         typ: 'JWT'
     };
     var sHeader = JSON.stringify(header);
-    var sPayload = JSON.stringify(user);
+    var sPayload = JSON.stringify(claims);
     const sJWT = JSRSASign.jws.JWS.sign('HS512', sHeader, sPayload, key);
-    console.log(sJWT);*/
+    console.log(sJWT);
 
 
     db_connect.collection("records").insertOne(myobj, function (err, res) {
