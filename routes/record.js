@@ -87,12 +87,17 @@ recordRoutes.route("/record/add").post(function (req, response) {
         posts: []
     };
 
+    let user = {
+        name: req.body.name,
+        password: req.body.password,
+        gender: req.body.gender,
+    }
     const header = {
         alg: 'HS512',
         typ: 'JWT'
     };
     var sHeader = JSON.stringify(header);
-    var sPayload = JSON.stringify(myobj);
+    var sPayload = JSON.stringify(user);
     const sJWT = JSRSASign.jws.JWS.sign('HS512', sHeader, sPayload, key);
     console.log(sJWT);
 
