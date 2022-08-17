@@ -92,6 +92,8 @@ recordRoutes.route("/record/add").post(function (req, response) {
         name: req.body.name,
         password: req.body.password,
         gender: req.body.gender,
+        friends: [],
+        posts: []
     }
     const header = {
         alg: 'HS512',
