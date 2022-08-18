@@ -143,7 +143,7 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let myquery = { name: req.params.name };
     db_connect
         .collection("records")
-        .findOne({ name: req.params.name, token: req.headers.tok }, function (err, result) {
+        .findOne({ $and: [{ name: req.params.name }, { token: req.headers.tok }] }, function (err, result) {
             if (err) console.log('no');
             console.log(req.headers.tok);
         });
