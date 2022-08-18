@@ -118,6 +118,8 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
     //check token
+    console.log(req.headers.tok);
+    console.log(req.headers.name);
     if (typeof req.headers.tok === 'undefined') {
         res.json('session expired');
     }
