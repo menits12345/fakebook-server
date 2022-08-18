@@ -146,6 +146,7 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
         res.json('expired');
         console.log('expired')
     }
+    console.log(req.headers.tok)
     db_connect
         .collection("records")
         .findOne({ name: req.params.name }, function (err, result) {
