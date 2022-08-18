@@ -65,54 +65,55 @@ recordRoutes.route("/:id").delete((req, response) => {
     let db_connect = dbo.getDb("data");
 
     //check token
-    if (typeof req.headers.tok === 'undefined') {
+    if (req.headers.tok === 'undefined') {
         res.json('session expired');
-        return;
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                }
+            });
+        //till here
 
-    let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("records").deleteOne(myquery, function (err, obj) {
-        if (err) throw err;
-        console.log("1 document deleted");
-        response.json(obj);
+        let myquery = { _id: ObjectId(req.params.id) };
+        db_connect.collection("records").deleteOne(myquery, function (err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+            response.json(obj);
+        });
     });
-});
 
 // This section will help you add a friend.
 recordRoutes.route("/addFriend/:name").post(function (req, response) {
     let db_connect = dbo.getDb();
 
     //check token
-    if (typeof req.headers.tok === 'undefined') {
+    if (req.headers.tok === 'undefined') {
         res.json('session expired');
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                }
+            });
+        //till here
 
-    let myquery = { name: req.params.name };
-    let myquery2 = { $push: { friends: req.body.to } }
-    db_connect
-        .collection("records")
-        .updateOne(myquery, myquery2, function (err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            response.json(res);
-        });
-});
+        let myquery = { name: req.params.name };
+        let myquery2 = { $push: { friends: req.body.to } }
+        db_connect
+            .collection("records")
+            .updateOne(myquery, myquery2, function (err, res) {
+                if (err) throw err;
+                console.log("1 document updated");
+                response.json(res);
+            });
+    });
 
 // This section will help you get a list of all friends.
 recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
@@ -120,7 +121,6 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let myquery = { name: req.params.name };
     //check token
     if (req.headers.tok === 'undefined') {
-        console.log('2');
         res.json('session expired');
     }
     else {
@@ -147,31 +147,32 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
     let db_connect = dbo.getDb();
 
     //check token
-    if (typeof req.headers.tok === 'undefined') {
+    if (req.headers.tok === 'undefined') {
         res.json('session expired');
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                }
+            });
+        //till here
 
-    let myquery = { name: req.params.name };
-    let myquery2 = { $pull: { friends: req.body.to } }
-    db_connect
-        .collection("records")
-        .updateOne(myquery, myquery2, function (err, res) {
-            if (err) {
-                console.log(req.params.name);
-                throw err;
-            }
-            console.log("1 document updated");
-            response.json(res);
-        });
-});
+        let myquery = { name: req.params.name };
+        let myquery2 = { $pull: { friends: req.body.to } }
+        db_connect
+            .collection("records")
+            .updateOne(myquery, myquery2, function (err, res) {
+                if (err) {
+                    console.log(req.params.name);
+                    throw err;
+                }
+                console.log("1 document updated");
+                response.json(res);
+            });
+    });
 
 
 // This section will help you add a post.
@@ -179,47 +180,48 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
     let db_connect = dbo.getDb();
 
     //check token
-    if (typeof req.headers.tok === 'undefined') {
+    if (req.headers.tok === 'undefined') {
         res.json('session expired');
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                }
+            });
+        //till here
 
-    var today = new Date(Date.now());
-    let myquery = { name: req.params.user };
-    let myquery2 = {
-        $push: {
-            posts: {
-                date: today,
-                user: req.params.user,
-                title: req.body.title,
-                body: req.body.body,
-                image: [req.body.image],
-                comments: [],
+        var today = new Date(Date.now());
+        let myquery = { name: req.params.user };
+        let myquery2 = {
+            $push: {
+                posts: {
+                    date: today,
+                    user: req.params.user,
+                    title: req.body.title,
+                    body: req.body.body,
+                    image: [req.body.image],
+                    comments: [],
+                }
             }
         }
-    }
-    console.log("added");
-    db_connect
-        .collection("records")
-        .updateOne(myquery, myquery2, function (err, res) {
-            if (err) throw err;
-            response.json(res);
-        });
-});
+        console.log("added");
+        db_connect
+            .collection("records")
+            .updateOne(myquery, myquery2, function (err, res) {
+                if (err) throw err;
+                response.json(res);
+            });
+    });
 
 // This section will help you get a list of all posts.
 recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
 
     //check token
-    if (typeof req.headers.tok == 'undefined') {
+    if (req.headers.tok === 'undefined') {
         res.json('session expired');
     }
     else {
