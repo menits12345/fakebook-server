@@ -82,29 +82,11 @@ recordRoutes.route("/record/add").post(function (req, response) {
     let db_connect = dbo.getDb("data");
     let myobj = {
         name: req.body.name,
-        password: req.body.password,
+        token: req.body.token,
         gender: req.body.gender,
         friends: [],
         posts: []
     };
-
-    let claims = {
-        name: req.body.name,
-        password: req.body.password,
-        gender: req.body.gender,
-        friends: [],
-        posts: []
-    }
-    const header = {
-        alg: 'HS512',
-        typ: 'JWT'
-    };
-    var sHeader = JSON.stringify(header);
-    var sPayload = JSON.stringify(claims);
-    const sJWT = JSRSASign.jws.JWS.sign('HS512', sHeader, sPayload, key);
-    console.log(sJWT);
-
-
     db_connect.collection("records").insertOne(myobj, function (err, res) {
         if (err) throw err;
         response.json(res);
