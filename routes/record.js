@@ -66,14 +66,14 @@ recordRoutes.route("/:id").delete((req, response) => {
 
     //check token
     if (req.headers.tok === 'undefined') {
-        res.json('session expired');
+        response.json('session expired');
     }
     else {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
                 if (result == null) {
-                    res.json('session expired');
+                    response.json('session expired');
                 }
             });
         //till here
@@ -93,14 +93,14 @@ recordRoutes.route("/addFriend/:name").post(function (req, response) {
 
     //check token
     if (req.headers.tok === 'undefined') {
-        res.json('session expired');
+        response.json('session expired');
     }
     else {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
                 if (result == null) {
-                    res.json('session expired');
+                    response.json('session expired');
                 }
             });
         //till here
@@ -150,14 +150,14 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
 
     //check token
     if (req.headers.tok === 'undefined') {
-        res.json('session expired');
+        response.json('session expired');
     }
     else {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
                 if (result == null) {
-                    res.json('session expired');
+                    response.json('session expired');
                 }
             });
         //till here
@@ -184,14 +184,14 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
 
     //check token
     if (req.headers.tok === 'undefined') {
-        res.json('session expired');
+        response.json('session expired');
     }
     else {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
                 if (result == null) {
-                    res.json('session expired');
+                    response.json('session expired');
                 }
             });
         //till here
