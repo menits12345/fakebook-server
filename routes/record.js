@@ -57,9 +57,8 @@ recordRoutes.route("/record/findUser/:name").get(function (req, res) {
 });
 
 // This section will help you check if user with name and password exists.
-recordRoutes.route("/record/validate/:name").get(function (req, res) {
-    const myArray = req.params.name.split("@");
-    let myquery = { name: myArray[0], password: myArray[1] };
+recordRoutes.route("/record/validate/:token").get(function (req, res) {
+    let myquery = { token: req.params.token };
     let db_connect = dbo.getDb("data");
     db_connect.collection("records").findOne(myquery, function (err, result) {
         if (err) throw err;
