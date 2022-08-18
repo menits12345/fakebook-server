@@ -219,6 +219,7 @@ recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
     //check token
     if (typeof req.headers.tok === 'undefined') {
         res.json('session expired');
+        return;
     }
     db_connect
         .collection("records")
