@@ -118,6 +118,8 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
     //check token
+    console.log(req.headers.tok);
+    console.log(req.headers.name);
     if (typeof req.headers.tok === 'undefined') {
         res.json('session expired');
     }
@@ -213,20 +215,6 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
 recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
 
-    console.log(req.headers.tok);
-    console.log(req.headers.name);
-    //check token
-    if (typeof req.headers.tok === 'undefined') {
-        res.json('session expired');
-    }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
 
     let myquery = { name: req.params.name };
     db_connect
