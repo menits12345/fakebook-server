@@ -142,7 +142,7 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
 
-    if (req.headers.tok == undefined) {
+    if (!req.headers.tok) {
         res.json('expired');
         console.log('expired')
     }
