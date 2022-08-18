@@ -147,6 +147,7 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
             if (result == null) {
                 console.log('expired');
                 res.json('expired');
+                return;
             }
         });
     db_connect
