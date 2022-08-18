@@ -142,11 +142,17 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
 
-    if (!req.headers.tok) {
+    if (typeof req.headers.tok === 'undefined') {
         res.json('expired');
-        console.log('expired')
     }
-    console.log(req.headers.tok)
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.params.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('expired');
+            }
+        });
+
     db_connect
         .collection("records")
         .findOne({ name: req.params.name }, function (err, result) {
