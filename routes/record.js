@@ -124,20 +124,24 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     if (typeof req.headers.tok === 'undefined') {
         res.json('session expired');
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
-    db_connect
-        .collection("records")
-        .findOne({ name: req.params.name }, function (err, result) {
-            if (err) throw err;
-            res.json(result.friends);
-        });
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                    return;
+                }
+            });
+        //till here
+        db_connect
+            .collection("records")
+            .findOne({ name: req.params.name }, function (err, result) {
+                if (err) throw err;
+                res.json(result.friends);
+            });
+    }
+
 });
 
 // This section will help you delete a friend.
@@ -219,24 +223,27 @@ recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
     //check token
     if (typeof req.headers.tok === 'undefined') {
         res.json('session expired');
-        return;
     }
-    db_connect
-        .collection("records")
-        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
-            if (result == null) {
-                res.json('session expired');
-            }
-        });
-    //till here
+    else {
+        db_connect
+            .collection("records")
+            .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (result == null) {
+                    res.json('session expired');
+                    return;
+                }
+            });
+        //till here
 
-    let myquery = { name: req.params.name };
-    db_connect
-        .collection("records")
-        .findOne({ name: req.params.name }, function (err, result) {
-            if (err) throw err;
-            res.json(result.posts);
-        });
+        let myquery = { name: req.params.name };
+        db_connect
+            .collection("records")
+            .findOne({ name: req.params.name }, function (err, result) {
+                if (err) throw err;
+                res.json(result.posts);
+            });
+    }
+
 });
 
 module.exports = recordRoutes;
