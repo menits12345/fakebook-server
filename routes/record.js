@@ -21,32 +21,8 @@ recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success', limit: bodyParser.limit });
 });
 
-// This section will help you get a list of all the records.
-recordRoutes.route("/record").get(function (req, res) {
-    let db_connect = dbo.getDb("data");
-    db_connect
-        .collection("records")
-        .find({})
-        .toArray(function (err, result) {
-            if (err) throw err;
-            res.json(result);
-        });
-});
-
-// This section will help you get a list of all the records with name.
-recordRoutes.route("/record/find/:name").get(function (req, res) {
-    let db_connect = dbo.getDb("data");
-    let myquery = { name: req.params.name };
-    db_connect
-        .collection("records")
-        .find({ myquery })
-        .toArray(function (err, result) {
-            if (err) throw err;
-            res.json(result);
-        });
-});
-
 // This section will help you check if user with name exists.
+// no check of token here
 recordRoutes.route("/record/findUser/:name").get(function (req, res) {
     let myquery = { name: req.params.name };
     let db_connect = dbo.getDb("data");
@@ -57,6 +33,7 @@ recordRoutes.route("/record/findUser/:name").get(function (req, res) {
 });
 
 // This section will help you check if user with name and password exists.
+// no check of token here
 recordRoutes.route("/record/validate/:token").get(function (req, res) {
     let myquery = { token: req.params.token };
     let db_connect = dbo.getDb("data");
@@ -66,17 +43,8 @@ recordRoutes.route("/record/validate/:token").get(function (req, res) {
     });
 });
 
-// This section will help you get a single record by id
-recordRoutes.route("/record/:id").get(function (req, res) {
-    let db_connect = dbo.getDb("data");
-    let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("records").findOne(myquery, function (err, result) {
-        if (err) throw err;
-        res.json(result);
-    });
-});
-
 // This section will help you create a new record.
+// no check of token here
 recordRoutes.route("/record/add").post(function (req, response) {
     let db_connect = dbo.getDb("data");
     let myobj = {
@@ -92,29 +60,23 @@ recordRoutes.route("/record/add").post(function (req, response) {
     });
 });
 
-// This section will help you update a record by id.
-recordRoutes.route("/update/:id").post(function (req, response) {
-    let db_connect = dbo.getDb();
-    let myquery = { _id: ObjectId(req.params.id) };
-    let newvalues = {
-        $set: {
-            name: req.body.name,
-            position: req.body.position,
-            gender: req.body.level,
-        },
-    };
-    db_connect
-        .collection("records")
-        .updateOne(myquery, newvalues, function (err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            response.json(res);
-        });
-});
-
 // This section will help you delete a record
 recordRoutes.route("/:id").delete((req, response) => {
     let db_connect = dbo.getDb("data");
+
+    //check token
+    if (typeof req.headers.tok === 'undefined') {
+        res.json('session expired');
+    }
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('session expired');
+            }
+        });
+    //till here
+
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("records").deleteOne(myquery, function (err, obj) {
         if (err) throw err;
@@ -126,6 +88,20 @@ recordRoutes.route("/:id").delete((req, response) => {
 // This section will help you add a friend.
 recordRoutes.route("/addFriend/:name").post(function (req, response) {
     let db_connect = dbo.getDb();
+
+    //check token
+    if (typeof req.headers.tok === 'undefined') {
+        res.json('session expired');
+    }
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('session expired');
+            }
+        });
+    //till here
+
     let myquery = { name: req.params.name };
     let myquery2 = { $push: { friends: req.body.to } }
     db_connect
@@ -141,18 +117,18 @@ recordRoutes.route("/addFriend/:name").post(function (req, response) {
 recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
-
+    //check token
     if (typeof req.headers.tok === 'undefined') {
-        res.json('expired');
+        res.json('session expired');
     }
     db_connect
         .collection("records")
-        .findOne({ $and: [{ name: req.params.name }, { token: req.headers.tok }] }, function (err, result) {
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
             if (result == null) {
-                res.json('expired');
+                res.json('session expired');
             }
         });
-
+    //till here
     db_connect
         .collection("records")
         .findOne({ name: req.params.name }, function (err, result) {
@@ -164,7 +140,20 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
 // This section will help you delete a friend.
 recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
     let db_connect = dbo.getDb();
-    console.log("1 document updated");
+
+    //check token
+    if (typeof req.headers.tok === 'undefined') {
+        res.json('session expired');
+    }
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('session expired');
+            }
+        });
+    //till here
+
     let myquery = { name: req.params.name };
     let myquery2 = { $pull: { friends: req.body.to } }
     db_connect
@@ -183,6 +172,20 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
 // This section will help you add a post.
 recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
     let db_connect = dbo.getDb();
+
+    //check token
+    if (typeof req.headers.tok === 'undefined') {
+        res.json('session expired');
+    }
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('session expired');
+            }
+        });
+    //till here
+
     var today = new Date(Date.now());
     let myquery = { name: req.params.user };
     let myquery2 = {
@@ -209,6 +212,20 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
 // This section will help you get a list of all posts.
 recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
+
+    //check token
+    if (typeof req.headers.tok === 'undefined') {
+        res.json('session expired');
+    }
+    db_connect
+        .collection("records")
+        .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+            if (result == null) {
+                res.json('session expired');
+            }
+        });
+    //till here
+
     let myquery = { name: req.params.name };
     db_connect
         .collection("records")
