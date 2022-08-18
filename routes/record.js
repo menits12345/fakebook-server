@@ -84,7 +84,8 @@ recordRoutes.route("/:id").delete((req, response) => {
             console.log("1 document deleted");
             response.json(obj);
         });
-    });
+    }
+});
 
 // This section will help you add a friend.
 recordRoutes.route("/addFriend/:name").post(function (req, response) {
@@ -113,7 +114,8 @@ recordRoutes.route("/addFriend/:name").post(function (req, response) {
                 console.log("1 document updated");
                 response.json(res);
             });
-    });
+    }
+});
 
 // This section will help you get a list of all friends.
 recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
@@ -172,7 +174,8 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
                 console.log("1 document updated");
                 response.json(res);
             });
-    });
+    }
+});
 
 
 // This section will help you add a post.
@@ -214,7 +217,8 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
                 if (err) throw err;
                 response.json(res);
             });
-    });
+    }
+});
 
 // This section will help you get a list of all posts.
 recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
