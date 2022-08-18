@@ -141,15 +141,20 @@ recordRoutes.route("/addFriend/:name").post(function (req, response) {
 recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
     let db_connect = dbo.getDb("data");
     let myquery = { name: req.params.name };
+
+    if (req.headers.tok == null) {
+        res.json('expired');
+        return;
+    }
     db_connect
         .collection("records")
         .findOne({ $and: [{ name: req.params.name }, { token: req.headers.tok }] }, function (err, result) {
             if (result == null) {
-                console.log('expired');
                 res.json('expired');
                 return;
             }
         });
+
     db_connect
         .collection("records")
         .findOne({ name: req.params.name }, function (err, result) {
