@@ -16,10 +16,13 @@ const JSRSASign = require('jsrsasign');
 //const mongoose = require("mongoose");
 const key = '$JesseWeNeedToCook!';
 var jsonParser = bodyParser.json({ limit: '5mb' });
+
 var urlencodedParser = bodyParser.urlencoded({ limit: '5mb', extended: true });
 recordRoutes.route("/").get(function (req, res) {
     res.json({ status: 'success', limit: bodyParser.limit });
 });
+
+
 
 // This section will help you check if user with name exists.
 // no check of token here
