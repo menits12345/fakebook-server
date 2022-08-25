@@ -68,12 +68,14 @@ recordRoutes.route("/:id").delete((req, response) => {
 
     //check token
     if (req.headers.tok === 'undefined') {
+
         response.json('session expired');
     }
     else {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
                     response.json('session expired');
                 }
@@ -101,7 +103,9 @@ recordRoutes.route("/addFriend/:name").post(function (req, response) {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
+
                     response.json('session expired');
                 }
             });
@@ -131,6 +135,7 @@ recordRoutes.route("/record/getFriends/:name").get(function (req, res) {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
                     res.json('session expired');
                 }
@@ -158,7 +163,9 @@ recordRoutes.route("/record/deleteFriend/:name").post(function (req, response) {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
+
                     response.json('session expired');
                 }
             });
@@ -192,7 +199,9 @@ recordRoutes.route("/addPost/:user").post(jsonParser, function (req, response) {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
+
                     response.json('session expired');
                 }
             });
@@ -234,6 +243,7 @@ recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
         db_connect
             .collection("records")
             .findOne({ $and: [{ name: req.headers.name }, { token: req.headers.tok }] }, function (err, result) {
+                if (err) throw err;
                 if (result == null) {
                     res.json('session expired');
                 }
