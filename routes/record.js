@@ -253,12 +253,21 @@ recordRoutes.route("/record/getPosts/:name").get(function (req, res) {
         let myquery = { name: req.params.name };
         db_connect
             .collection("records")
-            .findOne({ name: req.params.name }, function (err, result) {
+            .findOne({ name: req.params.name }, { _id: 0, posts: 1 }, function (err, result) {
                 if (err) throw err;
                 res.json(result.posts);
             });
     }
 
+});
+
+// This section will help you find all Users
+recordRoutes.route("/record/getUsers").get(function (req, res) {
+    let db_connect = dbo.getDb("data");
+    db_connect.collection("records").find({ 'name': { $ne: req.headers.name } }).toArray(function (err, result) {
+        if (err) throw err;
+        res.json(result);
+    });
 });
 
 module.exports = recordRoutes;
